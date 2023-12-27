@@ -28,9 +28,15 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-    - name: make gradle wrapper executable
-      run: chmod +x ./gradlew
-    - name: Build with Gradle
-      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2
       with:
-        arguments: build
+        gradle-version: 7.6
+    - name: Build arr
+      run: bash ./gradlew assemble --stacktrace
+    - name: Upload Build
+      uses: actions/upload-artifact@v3
+      with:
+        name: upload arr
+        path: |
+          lib/build/outputs/arr/*.arr
